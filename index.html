@@ -145,10 +145,10 @@
           <h1 class="title">FreeMine</h1>
         </div>
         <div class="icon-row">
-          <button class="icon" aria-label="paper plane"><span aria-hidden="true">✈️</span></button>
-          <button class="icon" aria-label="twitter"><span aria-hidden="true">𝕏</span></button>
-          <button class="icon" aria-label="bell"><span aria-hidden="true">🔔</span></button>
-          <button class="icon" aria-label="theme toggle"><span aria-hidden="true">🌓</span></button>
+          <span class="icon" role="img" aria-label="paper plane"><span aria-hidden="true">✈️</span></span>
+          <span class="icon" role="img" aria-label="twitter"><span aria-hidden="true">𝕏</span></span>
+          <span class="icon" role="img" aria-label="bell"><span aria-hidden="true">🔔</span></span>
+          <span class="icon" role="img" aria-label="theme toggle"><span aria-hidden="true">🌓</span></span>
         </div>
       </header>
 
@@ -210,10 +210,15 @@
     </main>
 
     <script>
+      const hoursInDay = 24
+      const minutesInHour = 60
+      const secondsInMinute = 60
+      const millisecondsInSecond = 1000
       // 24-hour claim cooldown in seconds.
-      const cooldownSeconds = 24 * 60 * 60
+      const cooldownSeconds = hoursInDay * minutesInHour * secondsInMinute
       const activeMultiplier = 1
-      const simulatedLastClaimOffsetMs = 8 * 60 * 60 * 1000
+      // Demo offset to show an in-progress cooldown ring.
+      const simulatedLastClaimOffsetMs = 8 * minutesInHour * secondsInMinute * millisecondsInSecond
       const lastClaimAt = new Date(Date.now() - simulatedLastClaimOffsetMs)
 
       const countdownEl = document.getElementById('countdown')
@@ -232,7 +237,7 @@
 
       function updateCountdown() {
         const now = Date.now()
-        const nextClaimMs = lastClaimAt.getTime() + cooldownSeconds * 1000
+        const nextClaimMs = lastClaimAt.getTime() + cooldownSeconds * millisecondsInSecond
         const remaining = Math.max(0, Math.floor((nextClaimMs - now) / 1000))
         const progress = 1 - remaining / cooldownSeconds
         const degrees = Math.max(0, Math.min(360, Math.round(progress * 360)))
