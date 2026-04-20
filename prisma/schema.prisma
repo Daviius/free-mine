@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PackageType {
+  SUBSCRIPTION
+  LIFETIME
+}
+
+model User {
+  id        String    @id @default(cuid())
+  address   String    @unique
+  points    Decimal   @default(0) @db.Decimal(24, 8)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  claims    Claim[]
+  purchases Purchase[]
+}
+
+model MiningPackage {
+  id          Int         @id
+  name        String
+  type        PackageType
+  multiplier  Decimal     @db.Decimal(10, 4)
+  durationDays Int?
+  usdtAmount  Decimal     @db.Decimal(24, 8)
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  purchases   Purchase[]
+}
+
+model Purchase {
+  id          String       @id @default(cuid())
+  txHash      String       @unique
+  blockNumber BigInt
+  userId      String
+  packageId   Int
+  purchasedAt DateTime
+  startsAt    DateTime
+  endsAt      DateTime?
+  createdAt   DateTime     @default(now())
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pkg         MiningPackage @relation(fields: [packageId], references: [id], onDelete: Restrict)
+
+  @@index([userId])
+  @@index([packageId])
+}
+
+model Claim {
+  id          String   @id @default(cuid())
+  userId      String
+  claimDay    DateTime
+  credited    Decimal  @db.Decimal(24, 8)
+  multiplier  Decimal  @db.Decimal(10, 4)
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, claimDay])
+  @@index([userId, createdAt])
+}
+
+model AuthNonce {
+  address   String   @id
+  nonce     String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
