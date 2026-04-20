@@ -145,10 +145,10 @@
           <h1 class="title">FreeMine</h1>
         </div>
         <div class="icon-row">
-          <button class="icon" type="button" aria-label="paper plane" aria-disabled="true"><span aria-hidden="true">✈️</span></button>
-          <button class="icon" type="button" aria-label="twitter" aria-disabled="true"><span aria-hidden="true">𝕏</span></button>
-          <button class="icon" type="button" aria-label="bell" aria-disabled="true"><span aria-hidden="true">🔔</span></button>
-          <button class="icon" type="button" aria-label="theme toggle" aria-disabled="true"><span aria-hidden="true">🌓</span></button>
+          <button class="icon" type="button" aria-label="paper plane" disabled><span aria-hidden="true">✈️</span></button>
+          <button class="icon" type="button" aria-label="twitter" disabled><span aria-hidden="true">𝕏</span></button>
+          <button class="icon" type="button" aria-label="bell" disabled><span aria-hidden="true">🔔</span></button>
+          <button class="icon" type="button" aria-label="moon" disabled><span aria-hidden="true">🌓</span></button>
         </div>
       </header>
 
@@ -232,7 +232,7 @@
       function formatTime(totalSeconds) {
         const h = String(Math.floor(totalSeconds / secondsInHour)).padStart(2, '0')
         const m = String(Math.floor((totalSeconds % secondsInHour) / secondsInMinute)).padStart(2, '0')
-        const s = String(totalSeconds % 60).padStart(2, '0')
+        const s = String(totalSeconds % secondsInMinute).padStart(2, '0')
         return `${h}:${m}:${s}`
       }
 
