@@ -145,10 +145,10 @@
           <h1 class="title">FreeMine</h1>
         </div>
         <div class="icon-row">
-          <span class="icon" role="img" aria-label="paper plane"><span aria-hidden="true">✈️</span></span>
-          <span class="icon" role="img" aria-label="twitter"><span aria-hidden="true">𝕏</span></span>
-          <span class="icon" role="img" aria-label="bell"><span aria-hidden="true">🔔</span></span>
-          <span class="icon" role="img" aria-label="theme toggle"><span aria-hidden="true">🌓</span></span>
+          <button class="icon" type="button" aria-label="paper plane"><span aria-hidden="true">✈️</span></button>
+          <button class="icon" type="button" aria-label="twitter"><span aria-hidden="true">𝕏</span></button>
+          <button class="icon" type="button" aria-label="bell"><span aria-hidden="true">🔔</span></button>
+          <button class="icon" type="button" aria-label="theme toggle"><span aria-hidden="true">🌓</span></button>
         </div>
       </header>
 
@@ -203,7 +203,7 @@
         </div>
 
         <div class="grid2 actions">
-          <a href="/shop">MIGRATION</a>
+          <a href="/shop">MIGRATION / SHOP</a>
           <button disabled>USD STAKING</button>
         </div>
       </section>
@@ -213,6 +213,7 @@
       const hoursInDay = 24
       const minutesInHour = 60
       const secondsInMinute = 60
+      const secondsInHour = minutesInHour * secondsInMinute
       const millisecondsInSecond = 1000
       // 24-hour claim cooldown in seconds.
       const cooldownSeconds = hoursInDay * minutesInHour * secondsInMinute
@@ -229,8 +230,8 @@
       dailyRateEl.textContent = (0.5 * activeMultiplier).toFixed(2)
 
       function formatTime(totalSeconds) {
-        const h = String(Math.floor(totalSeconds / 3600)).padStart(2, '0')
-        const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0')
+        const h = String(Math.floor(totalSeconds / secondsInHour)).padStart(2, '0')
+        const m = String(Math.floor((totalSeconds % secondsInHour) / minutesInHour)).padStart(2, '0')
         const s = String(totalSeconds % 60).padStart(2, '0')
         return `${h}:${m}:${s}`
       }
