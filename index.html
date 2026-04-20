@@ -132,6 +132,17 @@
         padding: 12px;
       }
       .actions button { color: #94a3b8; }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
       @media (min-width: 768px) {
         .page { max-width: 700px; }
       }
@@ -145,12 +156,13 @@
           <h1 class="title">FreeMine</h1>
         </div>
         <div class="icon-row">
-          <button class="icon" type="button" aria-label="paper plane" disabled><span aria-hidden="true">✈️</span></button>
-          <button class="icon" type="button" aria-label="twitter" disabled><span aria-hidden="true">𝕏</span></button>
-          <button class="icon" type="button" aria-label="bell" disabled><span aria-hidden="true">🔔</span></button>
-          <button class="icon" type="button" aria-label="moon" disabled><span aria-hidden="true">🌓</span></button>
+          <button class="icon" type="button" aria-label="paper plane" aria-describedby="placeholder-icons-note"><span aria-hidden="true">✈️</span></button>
+          <button class="icon" type="button" aria-label="twitter" aria-describedby="placeholder-icons-note"><span aria-hidden="true">𝕏</span></button>
+          <button class="icon" type="button" aria-label="bell" aria-describedby="placeholder-icons-note"><span aria-hidden="true">🔔</span></button>
+          <button class="icon" type="button" aria-label="moon" aria-describedby="placeholder-icons-note"><span aria-hidden="true">🌓</span></button>
         </div>
       </header>
+      <p id="placeholder-icons-note" class="sr-only">Top bar icons are placeholders for future features.</p>
 
       <section class="stack">
         <article class="card hub">
@@ -210,6 +222,8 @@
     </main>
 
     <script>
+      const basePointsPerDay = 0.5
+      const demoOffsetHours = 8
       const hoursInDay = 24
       const minutesInHour = 60
       const secondsInMinute = 60
@@ -219,15 +233,17 @@
       const cooldownSeconds = hoursInDay * minutesInHour * secondsInMinute
       const activeMultiplier = 1
       // Demo offset to show an in-progress cooldown ring.
-      const simulatedLastClaimOffsetMs = 8 * minutesInHour * secondsInMinute * millisecondsInSecond
+      const simulatedLastClaimOffsetMs = demoOffsetHours * minutesInHour * secondsInMinute * millisecondsInSecond
       const lastClaimAt = new Date(Date.now() - simulatedLastClaimOffsetMs)
 
       const countdownEl = document.getElementById('countdown')
       const ringEl = document.getElementById('ring')
       const claimActionEl = document.getElementById('claimAction')
       const dailyRateEl = document.getElementById('dailyRate')
+      const nodeMinedEl = document.getElementById('nodeMined')
 
-      dailyRateEl.textContent = (0.5 * activeMultiplier).toFixed(2)
+      dailyRateEl.textContent = (basePointsPerDay * activeMultiplier).toFixed(2)
+      nodeMinedEl.textContent = (basePointsPerDay * activeMultiplier).toFixed(2)
 
       function formatTime(totalSeconds) {
         const h = String(Math.floor(totalSeconds / secondsInHour)).padStart(2, '0')
