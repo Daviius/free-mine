@@ -38,7 +38,7 @@ async function main() {
 
   const mintTx = await usdt.mint(deployer.address, parseUnits("1000000", 18));
   await mintTx.wait();
-  console.log("Minted 1,000,000 USDTT to deployer");
+  console.log("Minted 1,000,000 USDT Test to deployer");
 }
 
 main().catch((error) => {

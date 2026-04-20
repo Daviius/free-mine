@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useMemo } from "react";
+import { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, createConfig, http } from "wagmi";
 import { bscTestnet } from "wagmi/chains";
@@ -19,9 +19,9 @@ const config = createConfig({
   },
 });
 
-export function Web3Provider({ children }: { children: ReactNode }) {
-  const queryClient = useMemo(() => new QueryClient(), []);
+const queryClient = new QueryClient();
 
+export function Web3Provider({ children }: { children: ReactNode }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

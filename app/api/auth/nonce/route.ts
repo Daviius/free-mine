@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
+import { isAddress } from "viem";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   const address = String(body?.address || "").toLowerCase();
 
-  if (!address || !address.startsWith("0x") || address.length !== 42) {
+  if (!address || !isAddress(address)) {
     return NextResponse.json({ error: "Invalid address" }, { status: 400 });
   }
 

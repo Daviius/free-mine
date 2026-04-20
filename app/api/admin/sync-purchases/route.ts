@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     transport: http(rpcUrl),
     chain: {
       id: chainId,
-      name: `BNB chain ${chainId}`,
+      name: `BNB Chain ${chainId}`,
       nativeCurrency: { decimals: 18, name: "BNB", symbol: "BNB" },
       rpcUrls: { default: { http: [rpcUrl] } },
     },

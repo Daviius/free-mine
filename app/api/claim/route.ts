@@ -22,7 +22,7 @@ export async function POST() {
   const reward = BASE_DAILY_REWARD * multiplier;
 
   try {
-    await prisma.$transaction(async (tx) => {
+    const updatedUser = await prisma.$transaction(async (tx) => {
       await tx.claim.create({
         data: {
           userId: user.id,
@@ -32,7 +32,7 @@ export async function POST() {
         },
       });
 
-      await tx.user.update({
+      return tx.user.update({
         where: { id: user.id },
         data: {
           points: {
@@ -40,6 +40,14 @@ export async function POST() {
           },
         },
       });
+    });
+
+    return NextResponse.json({
+      ok: true,
+      credited: reward,
+      multiplier,
+      pointsBalance: Number(updatedUser.points),
+      claimDay,
     });
   } catch (error) {
     if (
@@ -54,14 +62,4 @@ export async function POST() {
 
     throw error;
   }
-
-  const refreshedUser = await prisma.user.findUnique({ where: { id: user.id } });
-
-  return NextResponse.json({
-    ok: true,
-    credited: reward,
-    multiplier,
-    pointsBalance: Number(refreshedUser?.points || 0),
-    claimDay,
-  });
 }
